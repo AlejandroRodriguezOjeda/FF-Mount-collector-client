@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Mounts from "./Mounts"
+import service from "../services/service.config"
 
 
 
@@ -11,6 +12,7 @@ function MountDetails() {
 
     const [mountDetails, setMountDetails] = useState(null)
     const {id} = useParams()
+    const [addToFavs, setAddToFavs] = useState(true)
 
 
     useEffect(()=>{
@@ -34,7 +36,16 @@ function MountDetails() {
         return <h3>...loading</h3>
     }
 
-
+const handleAddtoFav = async (e) =>{
+    e.preventDefault();
+    try {
+    const response = await service.patch(`/mounts/${id}/fav`)
+    console.log(response);
+    setMountDetails(response.data)
+    } catch (error) {
+        console.log("cant add to favs",error);
+    }
+}
 
     return(
         <div>
@@ -60,6 +71,12 @@ function MountDetails() {
 
 
 
+        </div>
+
+        <div>
+            <button>Add to owned:</button>
+            <button>Add to planning to get:</button>
+            <button onClick={handleAddtoFav}>Create favorite</button>
         </div>
 
 

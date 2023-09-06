@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import service from "../services/service.config";
+import { AuthContext } from "../context/auth.context";
 
 function Login() {
+
+  const {verifyToken} = useContext(AuthContext)
 
     const navigate = useNavigate()
   const [email, setEmail] = useState("");
@@ -29,6 +32,13 @@ function Login() {
             username
         })
         console.log(response);
+      
+        localStorage.setItem("authToken", response.data.authToken)
+      
+      
+      await verifyToken()
+      
+      
         navigate("/Mounts")
 
 

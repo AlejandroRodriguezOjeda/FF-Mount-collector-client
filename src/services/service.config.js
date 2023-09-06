@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const service = axios.create({
-    baseURL: "http://localhost:5005/api"
+    baseURL: import.meta.env.VITE_SERVER_URL
 })
 
 service.interceptors.request.use((config) =>{
@@ -10,7 +10,7 @@ service.interceptors.request.use((config) =>{
 const storedToken = localStorage.getItem("authToken")
 
 if(storedToken){
-    config.headers.authoriazation = `Bearer ${storedToken} `
+    config.headers.authorization  = `Bearer ${storedToken} `
 }
 
 return config

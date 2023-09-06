@@ -38,9 +38,9 @@ function AuthWrapper(props) {
   }
 
   const passedContext = {
-    verifyToken, // para validar el token en login, volver a la app o logout
-    isUserActive, // para mostrar enlaces dependiendo de si el user esta logeado o no. Ver paginas privadas.
-    activeUserId // para mostrar funcionalidades de borrar/editar solo cuando el usuario sea el dueño de un documento
+    verifyToken, 
+    isUserActive, 
+    activeUserId 
   }
 
   // clausula de guardia para toda la pagina
