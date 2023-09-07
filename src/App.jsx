@@ -24,7 +24,7 @@ function App() {
         <Route path=":id" element={<MountDetails />} />
         <Route path="my-profile" element={<Profile />} />
         <Route path="/new-favorite/:id" element={<AddToFavorites />}/>
-        <Route path="/:favoriteId" element={<Favorite />}/>
+        <Route path="/mounts/:favoriteId" element={<Favorite />}/>
         
         
       </Routes>

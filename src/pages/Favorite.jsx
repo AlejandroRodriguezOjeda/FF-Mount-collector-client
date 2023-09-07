@@ -9,6 +9,7 @@ function Favorite() {
     const [favoriteInfo , setFavoriteInfo] = useState(null)
     const { favoriteId } = useParams();
 
+    const navigate = useNavigate()
 
     useEffect(() =>{
         getData()
@@ -18,7 +19,7 @@ function Favorite() {
 
     const getData = async() => {
         try {
-            const response = await axios.get(`/mounts/${favoriteId}`);
+            const response = await service.get(`/mounts/${favoriteId}`);
       
             
             setFavoriteInfo(response.data);
@@ -27,6 +28,18 @@ function Favorite() {
         }
     }
 
+
+
+    const handleDelete = async () => {
+        try {
+          // Make a DELETE request to delete the favorite
+          await service.delete(`/mounts/${favoriteId}/delete-fav`);
+          // Redirect to a different page after successful deletion
+          navigate("/my-profile");
+        } catch (error) {
+          console.log(error);
+        }
+      };
     if (favoriteInfo === null) {
         return <h2>Loading...</h2>;
     }
@@ -35,8 +48,16 @@ function Favorite() {
         <div>
           <h2>Favorite Info</h2>
         
-          <p>User: {favoriteInfo.user.username}</p>
+          <p>User: {favoriteInfo.username}</p>
           
+
+
+
+
+      {/* Delete Button */}
+      <button onClick={handleDelete}>Delete</button>
+      <br />
+      <button>Edit</button>
         </div>
       );
 

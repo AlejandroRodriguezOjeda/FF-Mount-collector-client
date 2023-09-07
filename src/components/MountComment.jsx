@@ -4,19 +4,23 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import service from "../services/service.config";
 import { useState, useEffect } from "react";
-function MountComment(props) {
+function MountComment() {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { activeUserId  } = useContext(AuthContext);
   const { id } = useParams();
+ console.log(activeUserId );
 
   const [mountComments, setMountComments] = useState([]);
+
+  
 
   useEffect(() => {
     async function fetchComments() {
       try {
-        const response = await service.get(`/${id}/createComment`);
-        const comments = await response.json();
-        setMountComments(comments);
+        const response = await service.get(`comment/${id}/comments`);
+        // const comments = await response.json();
+        setMountComments(response.data);
+        console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -29,8 +33,8 @@ function MountComment(props) {
     event.preventDefault();
     try {
       await deleteCommentService(commentId);
-      updateComments();
-      console.log(updateComments);
+   
+      
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +56,7 @@ function MountComment(props) {
           </h5>
         )}
 
-        {user._id === eachComment.username._id || user.role === "admin" ? (
+        {activeUserId === eachComment.username._id /*|| user.role === "admin" */ ? (
           <button onClick={(event) => deleteComment(event, eachComment._id)}>
             Borrar comentario
           </button>

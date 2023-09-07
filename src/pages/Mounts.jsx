@@ -40,7 +40,7 @@ function Mounts(props){
         return (
 
             <div>
-                <Search allMounts={allMounts} />
+                {/* <Search allMounts={allMounts} /> */}
 
             <div>
               {allMounts.length === 0 ? (

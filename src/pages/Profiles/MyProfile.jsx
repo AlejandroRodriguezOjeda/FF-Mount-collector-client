@@ -8,7 +8,7 @@ function Profile() {
 
     const [profileInfo, setProfileInfo] = useState(null)
     const [myFavorites, setMyFavorites] = useState([])
-    const [whatIown, setWhatIown] = useState([])
+    const [ownedMounts, setOwnedMounts] = useState([]);
     const { favoriteId } = useParams();
 
 useEffect(() =>{
@@ -27,9 +27,18 @@ const getData = async() => {
         // const favoriteId = favoriteResponse.data._id;
 
 
+
+
         const favmount = await service.get(`/mounts/${favoriteId}`)
         console.log(favmount.data);
         setMyFavorites(favmount.data)
+
+  // Fetch the user's owned mounts
+  const ownedMountsResponse = await service.get("/user/owned-mounts");
+  console.log(ownedMountsResponse.data);
+  setOwnedMounts(ownedMountsResponse.data);
+
+
     } catch (error) {
         console.log(error);
     }
@@ -47,15 +56,19 @@ return(
 
 
 <div>
-    <h3>mounts {profileInfo.user.username} owns:</h3>
+    <h3>mounts {profileInfo.user.username} owns:
+    <ul>
+          {ownedMounts.map((mount) => (
+            <li key={mount._id}>{mount.name}</li>
+          ))}
+        </ul>
+    </h3>
 </div>   
 <div>
 
 <h4>Favorites:</h4>
 <ul>
-          {myFavorites.map((favorite) => (
-            <li key={favorite._id}>{favorite.mount}</li>
-          ))}
+       
         </ul>
 
 </div>

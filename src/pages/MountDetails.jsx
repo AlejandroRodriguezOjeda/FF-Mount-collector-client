@@ -53,9 +53,7 @@ const navigate = useNavigate()
     try {
      
       await createCommentService(id, comment)
-    //   const response = await getCommentService(id);
-    //   setMountComments(response.data);
-    //   setNewComment("");
+
     getMountDetails()
     } catch (error) {
       console.log(error);
@@ -64,10 +62,7 @@ const navigate = useNavigate()
 
   const handleAddToOwned = async () => {
     try {
-        const response = await service.get(`/user/my-profile`, {
-            mountId: id,
-            status: "owned"
-          });
+        const response = await service.post("/mounts/mark-as-owned", { mountId: id})
           console.log(response);
 
       navigate("/my-profile")
