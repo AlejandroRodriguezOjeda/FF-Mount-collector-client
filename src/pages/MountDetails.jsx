@@ -6,7 +6,7 @@ import service from "../services/service.config";
 import { useNavigate } from "react-router";
 import { createCommentService, getCommentService } from '../services/service.comments'
 import MountComment from "../components/mountComment";
-import MarkAsOwned from "./MarkAsOwned";
+
 
 function MountDetails() {
   const [mountDetails, setMountDetails] = useState(null);
@@ -60,16 +60,16 @@ const navigate = useNavigate()
     }
   }
 
-  const handleAddToOwned = async () => {
-    try {
-        const response = await service.post("/mounts/mark-as-owned", { mountId: id})
-          console.log(response);
+//   const handleAddToOwned = async () => {
+//     try {
+//         const response = await service.post("/mounts/mark-as-owned", { mountId: id})
+//           console.log(response);
 
-      navigate("/my-profile")
-    } catch (error) {
-      console.log("Error adding to owned:", error);
-    }
-  };
+//       navigate("/my-profile")
+//     } catch (error) {
+//       console.log("Error adding to owned:", error);
+//     }
+//   };
 
 
 
@@ -104,7 +104,7 @@ return (
     </div>
 
     <div>
-      <button onClick={handleAddToOwned}>Add to owned:</button>
+      {/* <button onClick={handleAddToOwned}>Add to owned:</button> */}
       <Link to={`/new-favorite/${id}`}>
       <button>Create favorite</button>
       </Link>

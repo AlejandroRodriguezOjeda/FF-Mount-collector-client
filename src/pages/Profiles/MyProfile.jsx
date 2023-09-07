@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import service from "../../services/service.config"
 
 
@@ -28,10 +28,11 @@ const getData = async() => {
 
 
 
-
+        if(favoriteId){
         const favmount = await service.get(`/mounts/${favoriteId}`)
         console.log(favmount.data);
         setMyFavorites(favmount.data)
+    }
 
   // Fetch the user's owned mounts
   const ownedMountsResponse = await service.get("/user/owned-mounts");
@@ -55,20 +56,23 @@ return(
 
 
 
-<div>
+{/* <div>
     <h3>mounts {profileInfo.user.username} owns:
     <ul>
-          {ownedMounts.map((mount) => (
-            <li key={mount._id}>{mount.name}</li>
-          ))}
-        </ul>
+        {setMyFavorites.map((mount)=>(
+            <li>{mount._id}</li>
+        ))}
+    </ul>
     </h3>
-</div>   
+</div>    */}
 <div>
 
 <h4>Favorites:</h4>
 <ul>
-       
+{ownedMounts.map((mount) => (
+    <Link key={mount._id} to={`/mounts/${mount._id}`}>
+            <li >{mount.mount}</li>
+       </Link>   ))}
         </ul>
 
 </div>
