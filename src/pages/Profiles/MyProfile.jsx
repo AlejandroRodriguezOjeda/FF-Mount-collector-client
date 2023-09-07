@@ -9,7 +9,7 @@ function Profile() {
     const [profileInfo, setProfileInfo] = useState(null)
     const [myFavorites, setMyFavorites] = useState([])
     const [whatIown, setWhatIown] = useState([])
-
+    const { favoriteId } = useParams();
 
 useEffect(() =>{
     getData()
@@ -23,9 +23,13 @@ const getData = async() => {
         setProfileInfo(response.data)
 
 
-        // const favmount = await service.get(`/mounts/${favoriteId}`)
-        // console.log(favmount.data);
-        // setMyFavorites(favmount.data)
+        const favoriteResponse = await service.get(`/mounts/${favoriteId}`); 
+        const favoriteId = favoriteResponse.data._id;
+
+
+        const favmount = await service.get(`/mounts/${favoriteId}`)
+        console.log(favmount.data);
+        setMyFavorites(favmount.data)
     } catch (error) {
         console.log(error);
     }
@@ -48,7 +52,11 @@ return(
 <div>
 
 <h4>Favorites:</h4>
-
+<ul>
+          {myFavorites.map((favorite) => (
+            <li key={favorite._id}>{favorite.mount}</li>
+          ))}
+        </ul>
 
 </div>
  </div>
