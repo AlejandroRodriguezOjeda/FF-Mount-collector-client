@@ -18,6 +18,7 @@ function MountDetails() {
   const handleCommentChange = (event) => setNewComment(event.target.value)
 //   const mountId = useParams()
 
+const navigate = useNavigate()
 
 
 
@@ -63,8 +64,9 @@ function MountDetails() {
 
   const handleAddToOwned = async () => {
     try {
-        const response = await service.post(`/user/my-profile`, {
+        const response = await service.get(`/user/my-profile`, {
             mountId: id,
+            status: "owned"
           });
           console.log(response);
 

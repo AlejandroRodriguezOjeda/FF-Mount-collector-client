@@ -23,8 +23,8 @@ const getData = async() => {
         setProfileInfo(response.data)
 
 
-        const favoriteResponse = await service.get(`/mounts/${favoriteId}`); 
-        const favoriteId = favoriteResponse.data._id;
+        // const favoriteResponse = await service.get(`/mounts/${favoriteId}`); 
+        // const favoriteId = favoriteResponse.data._id;
 
 
         const favmount = await service.get(`/mounts/${favoriteId}`)

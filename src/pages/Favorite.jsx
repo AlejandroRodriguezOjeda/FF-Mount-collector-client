@@ -34,7 +34,7 @@ function Favorite() {
     return (
         <div>
           <h2>Favorite Info</h2>
-          {/* <p>Favorite ID: {favoriteInfo._id}</p> */}
+        
           <p>User: {favoriteInfo.user.username}</p>
           
         </div>
