@@ -2,7 +2,7 @@ import React from 'react'
 
 function Home() {
   return (
-    <div>FF Mount Collector</div>
+    <div><h2>FF Mount Collector</h2></div>
   )
 }
 
