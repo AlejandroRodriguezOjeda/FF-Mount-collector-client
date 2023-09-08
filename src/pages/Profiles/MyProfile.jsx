@@ -82,15 +82,15 @@ const mapMountsToIcons = (mounts, icons) => {
     <div>
       <h3>{profileInfo.user.username}'s profile</h3>
 
-      <div>
+      <div className="favorites">
         <h4>Favorites:</h4>
         <ul>
           {mappedOwnedMounts.map((mount) => (
             <Link key={mount._id} to={`/mounts/${mount._id}`}>
-              <li>
-                <img src={mount.iconUrl} alt={mount.mount} />
+              <>
+                <img src={mount.iconUrl} alt={mount.mount} style={{width: 80, margin: 10}} />
                 {/* {mount.mount} */}
-              </li>
+              </>
             </Link>
           ))}
         </ul>

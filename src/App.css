@@ -5,3 +5,26 @@
   text-align: center;
 }
 
+
+.favorites > * {
+  flex: 1; /* Distribute available space evenly */
+  flex-basis: calc(33.33% - 10px); /* Set the width of each item (adjust as needed) */
+  margin: 5px; /* Add margin between items (adjust as needed) */
+}
+
+.navbar{
+  background-color: rgb(217, 213, 102);
+  display: flex;
+}
+
+.allMounts{
+  display: flex;
+  flex-wrap: wrap; /* Enable wrapping */
+}
+
+.allMounts{
+  flex: 1; /* Distribute available space evenly */
+  flex-basis: calc(25% - 10px); /* Set the width of each item (adjust as needed) */
+  margin: 5px; /* Add margin between items (adjust as needed) */
+}
+

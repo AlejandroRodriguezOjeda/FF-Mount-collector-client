@@ -1,8 +1,6 @@
 import { useContext,useEffect, useState } from "react";
-import service from "../services/service.config";
 import { useNavigate } from "react-router";
 import axios from "axios"
-import Search from "../components/SearchBar";
 import { Link } from "react-router-dom";
 
 
@@ -46,16 +44,16 @@ function Mounts(props){
               {allMounts.length === 0 ? (
                 <h2>...loading</h2>
               ) : (
-                <div>
+                <div className="allMounts">
                   {allMounts.map((eachMount) => (
-                    <li key={eachMount.id} className="mountbox">
+                    <ul key={eachMount.id} className="mountbox">
                         <Link to={`/${eachMount.id}`}>
                       <img src={eachMount.image} alt="" />
                       </Link>
                       <div>
                         <h3>{eachMount.name}</h3>
                       </div>
-                    </li>
+                    </ul>
                   ))}
                 </div>
               )}

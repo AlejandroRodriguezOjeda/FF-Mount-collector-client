@@ -18,7 +18,7 @@ function Navbar() {
   navigate("/Login")
  }
   return (
-    <div>
+    <div className='navbar'>
 
     <Link to="/">Home</Link> 
 

@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { useNavigate } from "react-router";
 import { createCommentService, getCommentService } from '../services/service.comments'
-import MountComment from "../components/mountComment";
+import MountComment from "../components/mountComment.jsx";
 
 
 function MountDetails() {
