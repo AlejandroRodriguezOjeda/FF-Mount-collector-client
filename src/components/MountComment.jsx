@@ -1,40 +1,44 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { deleteCommentService } from "../services/service.comments";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import service from "../services/service.config";
-import { useState, useEffect } from "react";
-function MountComment() {
+
+function MountComment({Comments,updateComments}) {
   const navigate = useNavigate();
-  const { activeUserId  } = useContext(AuthContext);
+  const { activeUserId } = useContext(AuthContext);
   const { id } = useParams();
- console.log(activeUserId );
+  console.log(activeUserId);
 
   const [mountComments, setMountComments] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0); // A key to trigger component refresh
 
-  
+  const fetchComments = async () => {
+    try {
+      const response = await service.get(`comment/${id}/comments`);
+      setMountComments(response.data);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    async function fetchComments() {
-      try {
-        const response = await service.get(`comment/${id}/comments`);
-        // const comments = await response.json();
-        setMountComments(response.data);
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
+    // Fetch comments initially
     fetchComments();
-  }, []);
+  }, [id]); // Only refresh when the 'id' parameter changes
+
+  // Add a dependency on 'refreshKey' to trigger a refresh when it changes
+  useEffect(() => {
+    fetchComments();
+  }, [refreshKey]);
 
   const deleteComment = async (event, commentId) => {
     event.preventDefault();
     try {
       await deleteCommentService(commentId);
-   
-      
+      // Increment the refresh key to trigger a refresh
+      setRefreshKey((prevKey) => prevKey + 1);
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +60,7 @@ function MountComment() {
           </h5>
         )}
 
-        {activeUserId === eachComment.username._id /*|| user.role === "admin" */ ? (
+        {activeUserId === eachComment.username._id ? (
           <button onClick={(event) => deleteComment(event, eachComment._id)}>
             Borrar comentario
           </button>

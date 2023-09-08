@@ -5,7 +5,7 @@ import service from "../services/service.config";
 import { useNavigate } from "react-router";
 
 function AddToFavorites() {
-  const [favs, setFavs] = useState();
+
   const [mountDetails, setMountDetails] = useState(null);
   const { id } = useParams();
   const [comment, setComment] = useState("");

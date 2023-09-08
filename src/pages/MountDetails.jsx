@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Mounts from "./Mounts";
-import service from "../services/service.config";
+
 import { useNavigate } from "react-router";
 import { createCommentService, getCommentService } from '../services/service.comments'
 import MountComment from "../components/mountComment";
@@ -43,22 +42,28 @@ const navigate = useNavigate()
     }
   };
 
+  const updateComments = async () => {
+    try {
+      const response2 = await getCommentService(id);
+      setMountComments(response2.data);
+    } catch (error) {
+      console.log("Error updating comments:", error);
+    }
+  };
+
 
   const addComment = async (event) => {
     event.preventDefault();
-    //edits the comment field 
     const comment = {
-      comment: newComment
-    }
+      comment: newComment,
+    };
     try {
-     
-      await createCommentService(id, comment)
-
-    getMountDetails()
+      await createCommentService(id, comment);
+      await updateComments(); // Call the callback to refresh comments
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
 //   const handleAddToOwned = async () => {
 //     try {
@@ -126,7 +131,8 @@ return (
 
         <h3>Comments about this mount</h3>
         {mountComments !== null ? (
-    <MountComment mountComments={mountComments} updateComments={getMountDetails} />
+   <MountComment mountComments={mountComments} updateComments={getMountDetails} />
+ 
   ) : (
     <p>No comments available.</p>
   )}
