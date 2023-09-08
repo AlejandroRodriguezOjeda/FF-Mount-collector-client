@@ -6,7 +6,7 @@ import {
   createCommentService,
   getCommentService,
 } from "../services/service.comments";
-import MountComment from "../../components/MountComment.jsx";
+import MountComment from "../components/Comment.jsx";
 
 function MountDetails() {
   const [mountDetails, setMountDetails] = useState(null);
