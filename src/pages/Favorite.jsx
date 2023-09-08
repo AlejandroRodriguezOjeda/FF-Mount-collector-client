@@ -61,7 +61,10 @@ function Favorite() {
       await service.put(`/mounts/${favoriteId}/update`, {
         commentbox: updatedComment,
       });
-      setEditingComment(false);
+  
+      // After successfully saving the comment, fetch the updated data
+      await getData(); // Refetch the data
+      setEditingComment(false); // Disable editing mode
     } catch (error) {
       console.log(error);
     }
