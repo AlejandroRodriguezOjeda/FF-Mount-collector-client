@@ -10,7 +10,7 @@ import MountDetails from "./pages/MountDetails";
 import Profile from "./pages/Profiles/MyProfile";
 import AddToFavorites from "./pages/AddToFavorites";
 import Favorite from "./pages/Favorite";
-import IsPrivate from "./components/isPrivate";
+import IsPrivate from "./components/IsPrivate";
 import OtherProfiles from "./pages/Profiles/OtherProfiles";
 
 function App() {
