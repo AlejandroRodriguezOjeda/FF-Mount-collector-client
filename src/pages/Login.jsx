@@ -2,6 +2,9 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import service from "../services/service.config";
 import { AuthContext } from "../context/auth.context";
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
 
 function Login() {
 
@@ -29,7 +32,8 @@ function Login() {
         const response = await service.post("/auth/login",{
             email,
             password,
-            username
+            username,
+          
         })
         console.log(response);
       
@@ -58,27 +62,25 @@ function Login() {
       <h1>Log In</h1>
 
       <form onSubmit={handleLogin}>
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleEmailChange}
-        />
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Email address</Form.Label>
+        <Form.Control type="email" placeholder="Enter email" value={email} onChange={handleEmailChange} />
+      
+      </Form.Group>
+        <br />
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>password</Form.Label>
+        <Form.Control type="password" placeholder="Enter password" value={password} onChange={handlePasswordChange} />
+      
+      </Form.Group>
 
         <br />
 
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-
-        <br />
-
-        <button type="submit">Login</button>
+  
+        <Button variant="primary" type="submit">
+     Login
+      </Button>
 
         {errorMessage ? <p>{errorMessage}</p> : null}
 

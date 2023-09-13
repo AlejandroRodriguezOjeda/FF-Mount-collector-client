@@ -2,6 +2,9 @@ import { useContext,useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios"
 import { Link } from "react-router-dom";
+import Search from "../components/SearchBar";
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 
 function Mounts(props){
@@ -10,7 +13,10 @@ function Mounts(props){
 
     const [allMounts, setAllMounts] = useState([])
 
-    const [mountsToRender, setMountsToRender] = useState([])
+    const [mountsToRender, setMountsToRender] = useState (allMounts)
+    
+
+   
 
     useEffect(()=>{
         getMounts()
@@ -22,6 +28,7 @@ function Mounts(props){
             const response = await axios.get("https://ffxivcollect.com/api/mounts")
             console.log(response);
             setAllMounts(response.data.results)
+            setMountsToRender(response.data.results);
            
         } catch (error) {
             console.log(error);
@@ -32,34 +39,39 @@ function Mounts(props){
             return <h2>...loading</h2>
         }
 
-        // const handleSearch = (filteredArr) => {
-        //     setMountsToRender(filteredArr);
+
 
         return (
-
-            <div>
-                {/* <Search allMounts={allMounts} /> */}
-
-            <div>
-              {allMounts.length === 0 ? (
+          <div>
+            <Search allMounts={allMounts} setMountsToRender={setMountsToRender} />
+            <hr />
+            <h3>All Mounts...</h3>
+            <div className="centered">
+              {mountsToRender.length === 0 ? (
                 <h2>...loading</h2>
               ) : (
                 <div className="allMounts">
-                  {allMounts.map((eachMount) => (
+                  {mountsToRender.map((eachMount) => (
                     <ul key={eachMount.id} className="mountbox">
-                        <Link to={`/${eachMount.id}`}>
-                      <img src={eachMount.image} alt="" />
+                      <Link to={`/${eachMount.id}`}>
+                        
+                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                          <Card.Img variant="top" src={eachMount.image} alt="" />
+                          <Card.Body>
+                            <Card.Title>{eachMount.name}</Card.Title>
+                          
+                            <Button variant="primary">Check this one out!</Button>
+                          </Card.Body>
+                        </Card>
                       </Link>
-                      <div>
-                        <h3>{eachMount.name}</h3>
-                      </div>
                     </ul>
                   ))}
                 </div>
               )}
             </div>
-            </div>
-          );
+          </div>
+        );
+        
     }
 
 

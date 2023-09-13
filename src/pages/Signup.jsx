@@ -1,6 +1,8 @@
 import { useState } from "react";
 import service from "../services/service.config";
 import { useNavigate } from "react-router";
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 function Signup() {
 
@@ -24,7 +26,8 @@ function Signup() {
         await service.post("/auth/signup",{
             username,
             email,
-            password
+            password,
+        
         })
 
         navigate("/login")
@@ -45,37 +48,33 @@ function Signup() {
     
       <form onSubmit={handleSignup}>
         
-        <label>Username:</label>
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
+      <Form.Group className="mb-3" controlId="formBasicUsername">
+        <Form.Label>Username</Form.Label>
+        <Form.Control type="username" placeholder="Enter username" value={username} onChange={handleUsernameChange} />
+      
+      </Form.Group>
+
+        <br />
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Email address</Form.Label>
+        <Form.Control type="email" placeholder="Enter email" value={email} onChange={handleEmailChange} />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
+      </Form.Group>
+
+        <br />
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>password</Form.Label>
+        <Form.Control type="password" placeholder="Enter password" value={password} onChange={handlePasswordChange} />
+      
+      </Form.Group>
 
         <br />
 
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleEmailChange}
-        />
-
-        <br />
-
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-
-        <br />
-
-        <button type="submit">Signup</button>
+         <Button variant="primary" type="submit">
+        SignUp
+      </Button>
 
 
         {errorMessage ? <p>{errorMessage}</p> : null}

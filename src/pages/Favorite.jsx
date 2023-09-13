@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import service from "../services/service.config";
 import { useNavigate } from "react-router";
+import { AuthContext } from "../context/auth.context";
+import { useContext } from "react"; 
 
 function Favorite() {
+  const { activeUserId } = useContext(AuthContext); 
   const [favoriteInfo, setFavoriteInfo] = useState(null);
   const { favoriteId } = useParams();
-  const [editingComment, setEditingComment] = useState(false);
-  const [updatedComment, setUpdatedComment] = useState("");
+  const [editingNote, setEditingNotes] = useState(false);
+  const [updatedNote, setUpdatedNotes] = useState("");
   const navigate = useNavigate();
   const [mountIcons, setMountIcons] = useState([]);
   // Define a state variable to store the API response
@@ -23,7 +26,7 @@ function Favorite() {
     try {
       const response = await service.get(`/mounts/${favoriteId}`);
       setFavoriteInfo(response.data);
-      setUpdatedComment(response.data.mount.commentbox);
+      setUpdatedNotes(response.data.mount.commentbox);
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +39,6 @@ function Favorite() {
       );
       console.log(iconResponse.data);
       setMountIcons(iconResponse.data);
-      // Store the API response in the state variable
       setApiResponse(iconResponse.data);
     } catch (error) {
       console.log(error);
@@ -52,19 +54,19 @@ function Favorite() {
     }
   };
 
-  const handleEditComment = () => {
-    setEditingComment(true);
+  const handleEditNote = () => {
+    setEditingNotes(true);
   };
 
-  const handleSaveComment = async () => {
+  const handleSaveNote = async () => {
     try {
       await service.put(`/mounts/${favoriteId}/update`, {
-        commentbox: updatedComment,
+        commentbox: updatedNote,
       });
   
       // After successfully saving the comment, fetch the updated data
       await getData(); // Refetch the data
-      setEditingComment(false); // Disable editing mode
+      setEditingNotes(false); // Disable editing mode
     } catch (error) {
       console.log(error);
     }
@@ -81,6 +83,15 @@ function Favorite() {
 
   if (matchedMount) {
     const mountImageUrl = matchedMount.image;
+
+    // Check if the active user created this favorite
+
+    console.log("favoriteInfo.user._id:", favoriteInfo.mount.user);
+console.log("activeUserId:", activeUserId);
+
+const isCurrentUserFavorite = favoriteInfo.mount.user._id === activeUserId;
+    
+
     return (
       <div>
         <h2>Favorite Info</h2>
@@ -89,23 +100,27 @@ function Favorite() {
         <h3>{matchedMount.description}</h3>
         <hr />
         <h4>{matchedMount.enhanced_description}</h4>
-        {editingComment ? (
+        {editingNote ? (
           <div>
             <textarea
               value={updatedComment}
-              onChange={(e) => setUpdatedComment(e.target.value)}
+              onChange={(e) => setUpdatedNotes(e.target.value)}
             />
-            <button onClick={handleSaveComment}>Save</button>
+            <button onClick={handleSaveNote}>Save</button>
           </div>
         ) : (
           <div>
             <p>Comment: {favoriteInfo.mount.commentbox}</p>
-            <button onClick={handleEditComment}>Edit Comment</button>
+            {isCurrentUserFavorite && ( // Render Edit Note button conditionally
+              <button onClick={handleEditNote}>Edit Note</button>
+            )}
           </div>
         )}
 
         {/* Delete Button */}
-        <button onClick={handleDelete}>Delete</button>
+        {isCurrentUserFavorite && ( // Render Delete button conditionally
+          <button onClick={handleDelete}>Delete</button>
+        )}
         <br />
       </div>
     );

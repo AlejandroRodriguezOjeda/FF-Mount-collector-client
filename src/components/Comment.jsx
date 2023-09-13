@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import { deleteCommentService } from "../services/service.comments";
+// import { deleteCommentService } from "../services/service.comments";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import service from "../services/service.config";
 
+
 function MountComment({Comments,updateComments}) {
-  const navigate = useNavigate();
+  
   const { activeUserId } = useContext(AuthContext);
   const { id } = useParams();
   console.log(activeUserId);
@@ -36,9 +37,11 @@ function MountComment({Comments,updateComments}) {
   const deleteComment = async (event, commentId) => {
     event.preventDefault();
     try {
-      await deleteCommentService(commentId);
+     const response = await  service.delete(`/comment/${commentId}/delete`)
+    
       // Increment the refresh key to trigger a refresh
       setRefreshKey((prevKey) => prevKey + 1);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +52,13 @@ function MountComment({Comments,updateComments}) {
       <div className="comment-display" key={eachComment._id}>
         {eachComment.username ? (
           <h5>
-            <Link to={"/user/my-profile"}>
+               <Link
+              to={
+                activeUserId === eachComment.username._id
+                  ? "/my-profile" // Link to your own profile
+                  : `/user/${eachComment.username._id}/details` // Link to other users' profiles
+              }
+            >
               <b>{`${eachComment.username.username}`}</b>
             </Link>
             <b> said </b> "{`${eachComment.comment}`}"

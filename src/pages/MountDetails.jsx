@@ -2,11 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
-import {
-  createCommentService,
-  getCommentService,
-} from "../services/service.comments";
+
 import MountComment from "../components/Comment.jsx";
+import service from "../services/service.config.js";
 
 function MountDetails() {
   const [mountDetails, setMountDetails] = useState(null);
@@ -16,8 +14,6 @@ function MountDetails() {
 
   const handleCommentChange = (event) => setNewComment(event.target.value);
   //   const mountId = useParams()
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     getMountDetails();
@@ -31,21 +27,44 @@ function MountDetails() {
       console.log(response);
       setMountDetails(response.data);
 
-      const response2 = await getCommentService(id);
-      setMountComments(response2.data);
+      const response2 = await getComment(id);
+      setMountComments(response2);
     } catch (error) {
       console.log("I have found an error", error);
     }
   };
 
-  const updateComments = async () => {
+  const createComment = async (mountId, comment) => {
     try {
-      const response2 = await getCommentService(id);
-      setMountComments(response2.data);
+      const response = await service.post(
+        `/comment/${id}/createComment`,
+        comment
+      );
+      console.log(response);
+      // Handle any response data or state updates as needed
     } catch (error) {
-      console.log("Error updating comments:", error);
+      console.log("Error creating comment:", error);
     }
   };
+
+  const getComment = async (mountId) => {
+    try {
+      const response = await service.get(`comment/${id}/comments`);
+      setMountComments(response.data);
+      console.log(response);
+    } catch (error) {
+      console.log("Error getting comments:", error);
+    }
+  };
+
+  // const updateComments = async () => {
+  //   try {
+  //     const response2 = await getCommentService(id);
+  //     setMountComments(response2.data);
+  //   } catch (error) {
+  //     console.log("Error updating comments:", error);
+  //   }
+  // };
 
   const addComment = async (event) => {
     event.preventDefault();
@@ -53,8 +72,8 @@ function MountDetails() {
       comment: newComment,
     };
     try {
-      await createCommentService(id, comment);
-      await updateComments(); // Call the callback to refresh comments
+      await createComment(id, comment);
+      // await updateComments();
     } catch (error) {
       console.log(error);
     }
@@ -85,12 +104,9 @@ function MountDetails() {
         <p>check out how it sounds:</p>
 
         <audio controls src={mountDetails.bgm} />
-
-        {/* Hacer un link con el id  */}
       </div>
 
       <div>
-        {/* <button onClick={handleAddToOwned}>Add to owned:</button> */}
         <Link to={`/new-favorite/${id}`}>
           <button>Create favorite</button>
         </Link>
