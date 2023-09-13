@@ -38,7 +38,7 @@ function MountDetails() {
     }
   };
 
-  const createComment = async (mountId, comment) => {
+  const createComment = async (id, comment) => {
     try {
       const response = await service.post(
         `/comment/${id}/createComment`,
@@ -51,7 +51,7 @@ function MountDetails() {
     }
   };
 
-  const getComment = async (mountId) => {
+  const getComment = async (id) => {
     try {
       const response = await service.get(`comment/${id}/comments`);
       setMountComments(response);

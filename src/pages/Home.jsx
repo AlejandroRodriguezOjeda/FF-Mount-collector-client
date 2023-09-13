@@ -2,9 +2,10 @@ import React from 'react'
 
 function Home() {
   return (
-    <div><h2>Welcome to..</h2>
+    <div>
+    <div><h2>Welcome to..</h2></div>
 
-    <img src="src/assets/ffno back.png" alt="chocobo" /></div>
+   <div> <img src="src/assets/ffno back.png" alt="chocobo" /></div></div>
   )
 }
 

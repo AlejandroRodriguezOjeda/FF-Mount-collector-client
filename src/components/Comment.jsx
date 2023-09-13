@@ -73,7 +73,7 @@ function MountComment({Comments,updateComments}) {
         {activeUserId === eachComment.username._id ? (
           <Button
             onClick={(event) => deleteComment(event, eachComment._id)}
-            // style={{ backgroundColor: 'red', color: 'white' }}
+          
           >
             Borrar comentario
           </Button>
