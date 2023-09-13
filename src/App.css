@@ -32,6 +32,7 @@
 .mountbox {
   flex-basis: calc(20% - 100px); 
   margin: 90px; 
+  background-color: rgb(30, 29, 29);
   
 }
 
