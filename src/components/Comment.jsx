@@ -25,11 +25,11 @@ function MountComment({Comments,updateComments}) {
   };
 
   useEffect(() => {
-    // Fetch comments initially
+   
     fetchComments();
-  }, [id]); // Only refresh when the 'id' parameter changes
+  }, [id]); 
 
-  // Add a dependency on 'refreshKey' to trigger a refresh when it changes
+  
   useEffect(() => {
     fetchComments();
   }, [refreshKey]);
@@ -39,7 +39,7 @@ function MountComment({Comments,updateComments}) {
     try {
      const response = await  service.delete(`/comment/${commentId}/delete`)
     
-      // Increment the refresh key to trigger a refresh
+      
       setRefreshKey((prevKey) => prevKey + 1);
       console.log(response);
     } catch (error) {
@@ -52,25 +52,28 @@ function MountComment({Comments,updateComments}) {
       <div className="comment-display" key={eachComment._id}>
         {eachComment.username ? (
           <h5>
-               <Link
+            <Link
               to={
                 activeUserId === eachComment.username._id
                   ? "/my-profile" // Link to your own profile
                   : `/user/${eachComment.username._id}/details` // Link to other users' profiles
               }
             >
-              <b>{`${eachComment.username.username}`}</b>
+              <b style={{ color: 'lightblue' }}>{eachComment.username.username}</b>
             </Link>
-            <b> said </b> "{`${eachComment.comment}`}"
+            <b style={{ color: 'white' }}> said: </b> "{eachComment.comment}"
           </h5>
         ) : (
           <h5>
-            <b>Unknown User</b> said "{`${eachComment.comment}`}"
+            <b style={{ color: 'white' }}>Unknown User</b> said "{eachComment.comment}"
           </h5>
         )}
-
+    
         {activeUserId === eachComment.username._id ? (
-          <button onClick={(event) => deleteComment(event, eachComment._id)}>
+          <button
+            onClick={(event) => deleteComment(event, eachComment._id)}
+            style={{ backgroundColor: 'red', color: 'white' }}
+          >
             Borrar comentario
           </button>
         ) : null}

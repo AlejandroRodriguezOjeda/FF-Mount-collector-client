@@ -5,6 +5,8 @@ import service from "../services/service.config";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../context/auth.context";
 import { useContext } from "react"; 
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 function Favorite() {
   const { activeUserId } = useContext(AuthContext); 
@@ -26,7 +28,7 @@ function Favorite() {
     try {
       const response = await service.get(`/mounts/${favoriteId}`);
       setFavoriteInfo(response.data);
-      setUpdatedNotes(response.data.mount.commentbox);
+      setUpdatedNotes(response.data.mount.notes);
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +63,7 @@ function Favorite() {
   const handleSaveNote = async () => {
     try {
       await service.put(`/mounts/${favoriteId}/update`, {
-        commentbox: updatedNote,
+        notes: updatedNote,
       });
   
       // After successfully saving the comment, fetch the updated data
@@ -92,38 +94,43 @@ console.log("activeUserId:", activeUserId);
 const isCurrentUserFavorite = favoriteInfo.mount.user._id === activeUserId;
     
 
-    return (
-      <div>
-        <h2>Favorite Info</h2>
-        <h1>Mount: {matchedMount.name}</h1>
-        <img src={mountImageUrl} alt={favoriteInfo.mount.mount} />
-        <h3>{matchedMount.description}</h3>
-        <hr />
-        <h4>{matchedMount.enhanced_description}</h4>
-        {editingNote ? (
-          <div>
-            <textarea
-              value={updatedComment}
-              onChange={(e) => setUpdatedNotes(e.target.value)}
-            />
-            <button onClick={handleSaveNote}>Save</button>
-          </div>
-        ) : (
-          <div>
-            <p>Comment: {favoriteInfo.mount.commentbox}</p>
-            {isCurrentUserFavorite && ( // Render Edit Note button conditionally
-              <button onClick={handleEditNote}>Edit Note</button>
-            )}
-          </div>
-        )}
-
-        {/* Delete Button */}
-        {isCurrentUserFavorite && ( // Render Delete button conditionally
-          <button onClick={handleDelete}>Delete</button>
-        )}
-        <br />
+return (
+  <div>
+    <h2 style={{ color: 'white' }}>Favorite Info</h2>
+    <h1 style={{ color: 'white' }}>Mount: {matchedMount.name}</h1>
+    <img src={mountImageUrl} alt={favoriteInfo.mount.mount} />
+    <hr />
+    <h3 style={{ color: 'white' }}>{matchedMount.description}</h3>
+    <hr />
+    <h4 style={{ color: 'white' }}>{matchedMount.enhanced_description}</h4>
+    {editingNote ? (
+      <div className="d-flex justify-content-center align-items-center mt-3">
+        <div style={{ width: '80%' }}>
+          <textarea
+            value={updatedNote}
+            onChange={(e) => setUpdatedNotes(e.target.value)}
+            style={{ width: '100%', height: '100px' }}
+          />
+          <button className="btn btn-primary" onClick={handleSaveNote}>Save</button>
+        </div>
       </div>
-    );
+    ) : (
+      <div>
+        <hr />
+        <p style={{ color: 'white' }}>Personal Note: {favoriteInfo.mount.notes}</p>
+        {isCurrentUserFavorite && (
+          <button className="btn btn-primary" onClick={handleEditNote}>Edit Note</button>
+        )}
+      </div>
+    )}
+
+    <br />
+
+    {isCurrentUserFavorite && (
+      <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+    )}
+  </div>
+);
   } else {
     // Handle the case where a matching mount is not found
     return <p>No matching mount found.</p>;

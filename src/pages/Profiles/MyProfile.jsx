@@ -2,6 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import service from "../../services/service.config";
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Image from 'react-bootstrap/Image';
+import Row from 'react-bootstrap/Row';
+
 
 function Profile() {
   const [profileInfo, setProfileInfo] = useState(null);
@@ -117,42 +122,54 @@ console.log(error);
   return (
     <div>
       <h3>{profileInfo.user.username}'s profile</h3>
-
-      {imageUrl ? (<div><img src={imageUrl} alt="img" width={200} /></div>) : null}
-
+  
+      {imageUrl ? (
+        <div>
+          <Image
+            src={imageUrl}
+            alt="Profile Image"
+            rounded
+            style={{ width: '200px', margin: '0 auto' }}
+          />
+        </div>
+      ) : null}
+  
       <div className="favorites">
         <h4>Favorites:</h4>
-        <ul>
-          {mappedOwnedMounts.map((mount) => (
-            <Link key={mount._id} to={`/mounts/${mount._id}`}>
-              <>
-                <img src={mount.iconUrl} alt={mount.mount} style={{width: 80, margin: 10}} />
-                {/* {mount.mount} */}
-              </>
-            </Link>
-          ))}
-        </ul>
-<div>
-  <form>
-<label>Change profile picture: </label>
-  <input
-    type="file"
-    name="imageUrl"
-    onChange={handleFileUpload}
-    disabled={isUploading}
-  />
-  {isUploading ? <h3>... uploading image</h3> : null}
-  
-  
-  <button disabled={isUploading}>Add</button>
-    
-      
-      </form>
-
+        <Container>
+          <Row>
+            {mappedOwnedMounts.map((mount) => (
+              <Col key={mount._id} xs={6} md={4}>
+                <a href={`/mounts/${mount._id}`}>
+                  <Image
+                    src={mount.iconUrl}
+                    alt={mount.mount}
+                    thumbnail
+                    style={{  width: '80px',
+                    margin: '10px 5px',
+                    backgroundColor: 'black',
+                    padding: '5px',  }}
+                  />
+                </a>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </div>
+      <div>
+        <form>
+          <label>Change profile picture: </label>
+          <input
+            type="file"
+            name="imageUrl"
+            onChange={handleFileUpload}
+            disabled={isUploading}
+          />
+          {isUploading ? <h3>... uploading image</h3> : null}
+          <button disabled={isUploading}>Add</button>
+        </form>
+      </div>
     </div>
-
-</div>
-</div>
   );
 }
 

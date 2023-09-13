@@ -38,7 +38,7 @@ function AddToFavorites() {
     try {
       const response = await service.post(`/mounts/new-favorite`,{
       mount: mountDetails.id,
-     commentbox: comment,
+     notes: comment,
 
     })
 

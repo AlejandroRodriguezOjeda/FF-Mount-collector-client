@@ -2,7 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
-
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
+import ListGroup from 'react-bootstrap/ListGroup';
 import MountComment from "../components/Comment.jsx";
 import service from "../services/service.config.js";
 
@@ -17,6 +20,7 @@ function MountDetails() {
 
   useEffect(() => {
     getMountDetails();
+    getComment()
   }, [id]);
 
   const getMountDetails = async () => {
@@ -50,21 +54,12 @@ function MountDetails() {
   const getComment = async (mountId) => {
     try {
       const response = await service.get(`comment/${id}/comments`);
-      setMountComments(response.data);
-      console.log(response);
+      setMountComments(response);
+      console.log("updated comment",response);
     } catch (error) {
       console.log("Error getting comments:", error);
     }
   };
-
-  // const updateComments = async () => {
-  //   try {
-  //     const response2 = await getCommentService(id);
-  //     setMountComments(response2.data);
-  //   } catch (error) {
-  //     console.log("Error updating comments:", error);
-  //   }
-  // };
 
   const addComment = async (event) => {
     event.preventDefault();
@@ -74,10 +69,14 @@ function MountDetails() {
     try {
       await createComment(id, comment);
       // await updateComments();
+      setNewComment("");
+      // Fetch comments again to include the newly added comment
+      getComment();
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   if (mountDetails === null) {
     return <h3>...loading</h3>;
@@ -86,46 +85,55 @@ function MountDetails() {
   return (
     <div>
       <div>
-        <h4>{mountDetails.name}</h4>
+        <h4 style={{ color: 'white' }}>{mountDetails.name}</h4>
         <img src={mountDetails.image} alt="" />
         <hr />
-        <b>{mountDetails.description}</b>
+        <b style={{ color: 'white' }}>{mountDetails.description}</b>
         <hr />
-        <span>{mountDetails.enhanced_description}</span>
-
+        <span style={{ color: 'white' }}>{mountDetails.enhanced_description}</span>
+  
         <br />
-
-        <b>
+  
+        <b style={{ color: 'white' }}>
           seats: {mountDetails.seats} Patch: {mountDetails.patch}
         </b>
-
+  
         <hr />
-
-        <p>check out how it sounds:</p>
-
+  
+        <p style={{ color: 'white' }}>check out how it sounds:</p>
+  
         <audio controls src={mountDetails.bgm} />
       </div>
-
+  
       <div>
         <Link to={`/new-favorite/${id}`}>
           <button>Create favorite</button>
         </Link>
       </div>
-
+  
       <div>
-        <hr className="mount-comment" />
-
-        <h3>Deja tu comentario</h3>
-        <div className="comment-form">
-          <textarea
-            placeholder="Enter your comment here"
-            value={newComment}
-            onChange={handleCommentChange}
-          />
-          <button onClick={addComment}>Comentar</button>
+        <div>
+          <hr className="mount-comment" />
+  
+          <h3 style={{ color: 'white' }}>Deja tu comentario</h3>
+          <Form>
+            <Form.Group controlId="commentTextarea">
+              <Form.Label style={{ color: 'white' }}>Enter your comment here</Form.Label>
+              <div className="d-flex justify-content-center">
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={newComment}
+                  onChange={handleCommentChange}
+                  style={{ width: '400px' }}
+                />
+              </div>
+            </Form.Group>
+            <Button onClick={addComment}>Comentar</Button>
+          </Form>
         </div>
-
-        <h3>Comments about this mount</h3>
+  
+        <h3 style={{ color: 'white' }}>Comments about this mount</h3>
         {mountComments !== null ? (
           <MountComment
             mountComments={mountComments}
@@ -135,9 +143,10 @@ function MountDetails() {
           <p>No comments available.</p>
         )}
       </div>
-
-      {/* cambiar base de datos para deje de salir el error hex */}
     </div>
   );
+
 }
+
+
 export default MountDetails;
