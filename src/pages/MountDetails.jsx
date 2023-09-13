@@ -68,7 +68,7 @@ function MountDetails() {
     };
     try {
       await createComment(id, comment);
-      // await updateComments();
+      
       setNewComment("");
       // Fetch comments again to include the newly added comment
       getComment();
@@ -107,7 +107,7 @@ function MountDetails() {
   
       <div>
         <Link to={`/new-favorite/${id}`}>
-          <button>Create favorite</button>
+          <Button>Create favorite</Button>
         </Link>
       </div>
   

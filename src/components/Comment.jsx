@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import service from "../services/service.config";
+import Button from 'react-bootstrap/Button';
 
 
 function MountComment({Comments,updateComments}) {
@@ -70,12 +71,12 @@ function MountComment({Comments,updateComments}) {
         )}
     
         {activeUserId === eachComment.username._id ? (
-          <button
+          <Button
             onClick={(event) => deleteComment(event, eachComment._id)}
-            style={{ backgroundColor: 'red', color: 'white' }}
+            // style={{ backgroundColor: 'red', color: 'white' }}
           >
             Borrar comentario
-          </button>
+          </Button>
         ) : null}
       </div>
     );
